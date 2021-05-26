@@ -12,12 +12,12 @@ X = np.array([[x1, x2] for x1, x2 in zip([r.random() for _ in range(100)], [r.ra
 y = np.array([2 * x[0] + 3 * x[1] for x in X])
 
 def get_cost (X, y, theta):
-    return 0.5 * np.average(np.power((X @ theta.T) - y, 2))
+    return 0.5 * np.average(np.power(theta @ X.T - y, 2))
 
 def gradient(X, y, theta, learning_rate):
-    return learning_rate * np.average((X @ theta.T - y) @ X, axis = 0)
+    return learning_rate * (theta @ X.T - y) @ X - 0.000001 * theta
     
-def lin_regression(X, y, learning_rate = 0.000001, iteration = 10000):
+def lin_regression(X, y, learning_rate = 0.001, iteration = 1000):
     ones = np.ones([X.shape[0], 1])
     X = np.concatenate([ones, X], 1)
     
@@ -30,4 +30,4 @@ def lin_regression(X, y, learning_rate = 0.000001, iteration = 10000):
     return cost, theta
 
 val = lin_regression(X, y)
-#beta = np.linalg.inv(np.cross(X_tra, X)) * X_tra * y
+beta = np.linalg.inv(X.T @ X) @ X.T @ y

@@ -44,7 +44,7 @@ def solver():
     n = 8
     board = np.zeros([n,n])
     
-    board[0,0] = 1
+    board[3,0] = 1
     
     solve(n, board, 1, 0, 0)
     

@@ -6,7 +6,7 @@ Created on Thu Apr  8 15:18:06 2021
 @author: mahan
 """
 
-def get_change_methods_dp(coin_set = [1,2,3,5], amount = 15):
+def get_change_methods_dp(coin_set = [1,2,3,5], amount = 6):
     ar_change_methods = [list([0 for j in range (amount + 1)]) for i in range(len(coin_set) +1)]
     
     for i in range(len(coin_set) +1): ar_change_methods[i][0] = 1   
@@ -30,26 +30,25 @@ def get_change_methods_re(coin_set = [1,2,3,5], amount = 15):
     #   2. add a coin
     return get_change_methods_re(coin_set[:-1], amount) + get_change_methods_re(coin_set, amount - coin_set[-1])
 
-a = get_change_methods_dp()
-print(a)
 
-def ways(candidates, target, sol = [], solutions = []):
-    """
-    :type candidates: List[int]
-    :type target: int
-    :rtype: List[List[int]]
-    """
+
+def getWays(candidates=[1,2,3,5], target=6):
+    solutions = []
+    def waysRecr(candidates, target, sol):
+        if target == 0:
+            solutions.append(sol)
+            return
+        
+        if target < 0 or (len(candidates) == 0 and target > 0):
+            return
+        
+        for include in [True, False]:
+            if include:
+                waysRecr(candidates, target - candidates[0], sol + [candidates[0]])            
+            else:
+                waysRecr(candidates[1:], target, sol)
     
-    if target == 0:
-        print(sol)
-        solutions += [sol]
-        return True
-    
-    if target < 0:
-        return False
-    
-    if len(candidates) == 0 and target > 0:
-        return False
-    
-    
-    return ways(candidates[1:], target, sol, solutions) + ways(candidates, target - candidates[0], sol + [candidates[0]], solutions)
+    waysRecr(candidates, target, [])
+    return solutions
+
+print(getWays())
