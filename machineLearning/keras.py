@@ -21,66 +21,6 @@ train_y = np.eye(10)[raw_train_y]
 
 #%%
 '''
-multi-class classifier using deep neural network
-'''
-%load_ext tensorboard
-import datetime
-log_dir = f"./logs/fit/{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}"
-tb_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
-
-model = tf.keras.models.Sequential()
-model.add(tf.keras.layers.Flatten(input_shape=(28, 28)))
-model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu, kernel_regularizer=tf.keras.regularizers.L2(0.001)))
-model.add(tf.keras.layers.Dense(64, activation=tf.nn.relu, kernel_regularizer=tf.keras.regularizers.L2(0.001)))
-model.add(tf.keras.layers.Dense(32, activation=tf.nn.relu, kernel_regularizer=tf.keras.regularizers.L2(0.001)))
-model.add(tf.keras.layers.Dense(10, activation=tf.nn.softmax))
-
-optimizer = tf.keras.optimizers.Adam()
-model.compile(optimizer=optimizer, metrics=[tf.metrics.categorical_accuracy], loss=tf.losses.categorical_crossentropy)
-
-es = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=20, min_delta=0, restore_best_weights=True)
-
-model.fit(train_X, train_y, validation_split=0.2, epochs=10, callbacks=[es, tb_callback])
-
-test_pred_y = np.argmax(model.predict(test_X), axis=1)
-
-acc = tf.metrics.Accuracy()
-acc.reset_state()
-acc.update_state(test_y, test_pred_y)
-acc.result().numpy()
-
-#%%
-'''
-multi-class classifier using convolutional neural network
-'''
-layers = [
-        tf.keras.layers.InputLayer(input_shape=imgShape),
-        tf.keras.layers.Reshape(list(imgShape)+[1]),
-        tf.keras.layers.Conv2D(5, strides=(1, 1), kernel_size=(5, 5)),
-        tf.keras.layers.AveragePooling2D(),
-        tf.keras.layers.Flatten(),
-        tf.keras.layers.Dense(100, activation=tf.keras.activations.sigmoid, kernel_regularizer=tf.keras.regularizers.L2(0.001)),
-        tf.keras.layers.Dense(10, activation=tf.keras.activations.softmax)
-    ]
-
-cnn = tf.keras.models.Sequential(layers)
-
-optimizer = tf.keras.optimizers.Adam()
-cnn.compile(optimizer=optimizer, metrics=[tf.metrics.CategoricalAccuracy()], loss=tf.losses.categorical_crossentropy)
-es = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=20, min_delta=0, restore_best_weights=True)
-
-cnn.fit(train_X, train_y, validation_split=0.2, epochs=100, callbacks=es, batch_size=10000)
-
-test_pred_y = np.argmax(cnn.predict(test_X), axis=1)
-
-acc = tf.metrics.Accuracy()
-acc.reset_state()
-acc.update_state(test_y, test_pred_y)
-acc.result().numpy()
-np.savetxt('./y_fashion_mnist_cnn.csv', [test_y, test_pred_y])
-
-#%%
-'''
 autoencoders using deep neural network
 '''
 imgShape = (28, 28)
@@ -151,4 +91,3 @@ model.add(keras.layers.Dense(10, activation=keras.activations.sigmoid))
 model.add(keras.layers.Dense(1, activation=keras.activations.sigmoid))
 model.compile(optimizer=tf.optimizers.Adam(), loss=tf.losses.BinaryCrossentropy(), metrics=[tf.metrics.BinaryAccuracy()])
 model.fit(train_data, epochs=10)
-

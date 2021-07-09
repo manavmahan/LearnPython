@@ -11,9 +11,7 @@ from sklearn.linear_model import LinearRegression
 
 r.seed(20)
 
-X = []
-for x1, x2 in zip([r.random() for _ in range(100)], [r.random() for _ in range(100)]):                                                  
-    X.append(np.array([x1, x2]))
+X = np.random((100, 2))
     
 X = np.array(X)
 y = np.array([2*x[0] + 3*x[1] for x in X]).reshape(-1, 1)

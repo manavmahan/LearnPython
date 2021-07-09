@@ -11,7 +11,7 @@ thetas[l-1] = matrix(neurons[l] X neurons[l-1] + 1)
 
 *** calculated for all the layers
 activatations[l] =  X                                           if l==0
-                    activate(X @ thetas[l-1].T)                 if l==1
+                    activate(X @ thetas[0].T)                 if l==1
                     activate(activations[l-1] @ thetas[l-1].T)  if l>1 
                     
 ***  difference calcualted for layer (except first layer)

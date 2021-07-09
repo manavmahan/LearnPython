@@ -20,10 +20,12 @@ def get_change_methods_dp(coin_set = [1,2,3,5], amount = 6):
 
 def get_change_methods_re(coin_set = [1,2,3,5], amount = 15):
     # solved
-    if amount == 0: return 1
+    if amount == 0: 
+        return 1
     
     # no solution
-    if amount < 0 or (len(coin_set) == 0 and amount > 0): return 0
+    if amount < 0 or (len(coin_set) == 0 and amount > 0): 
+        return 0
     
     #partial solutions
     #   1. remove a coin

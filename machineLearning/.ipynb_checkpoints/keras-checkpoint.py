@@ -59,7 +59,8 @@ layers = [
         tf.keras.layers.Conv2D(5, strides=(1, 1), kernel_size=(5, 5)),
         tf.keras.layers.AveragePooling2D(),
         tf.keras.layers.Flatten(),
-        tf.keras.layers.Dense(100, activation=tf.keras.activations.sigmoid, kernel_regularizer=tf.keras.regularizers.L2(0.001)),
+        tf.keras.layers.Dense(100, activation=tf.keras.activations.sigmoid,\
+                              kernel_regularizer=tf.keras.regularizers.L2(0.001)),
         tf.keras.layers.Dense(10, activation=tf.keras.activations.softmax)
     ]
 
@@ -151,4 +152,3 @@ model.add(keras.layers.Dense(10, activation=keras.activations.sigmoid))
 model.add(keras.layers.Dense(1, activation=keras.activations.sigmoid))
 model.compile(optimizer=tf.optimizers.Adam(), loss=tf.losses.BinaryCrossentropy(), metrics=[tf.metrics.BinaryAccuracy()])
 model.fit(train_data, epochs=10)
-
